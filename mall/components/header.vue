@@ -37,7 +37,7 @@
 	.status_bar{
 		/* 自适应设备状态栏高度 */
 		height: var(--status-bar-height);
-		background: red;
+		background: rgba(0,0,0,.5);
 		width: 100%;
 	}
 	
@@ -77,6 +77,6 @@
 	
 	.active{
 		color: deepskyblue;
-		border-bottom: 1px solid deepskyblue;
+		border-bottom: 2px solid deepskyblue;
 	}
 </style>

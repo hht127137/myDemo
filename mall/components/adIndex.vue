@@ -33,7 +33,7 @@
 		width: 50%;
 		height: 520rpx;
 		view{
-			height: 265rpx;
+			height: 260rpx;
 		}
 	}
 </style>
