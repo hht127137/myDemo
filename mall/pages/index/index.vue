@@ -1,17 +1,22 @@
 <template>
 	<view class="content">
-		<!-- 设备状态栏 -->
-		<view class="status"></view>
+		<!-- 顶部导航 -->
 		<myHeader></myHeader>
 		<view class="headerHigh"></view>
-		<view class="goodsCon">
-			<image src="../../static/image/logo2.png" mode=""></image>
-		</view>
+		<!-- 轮播图 -->
+		<indexSwiper></indexSwiper>
+		<!-- 服务导航 -->
+		<indexService></indexService>
+		<!-- 广告 -->
+		<adIndex></adIndex>
 	</view>
 </template>
 
 <script>
 	import myHeader from "@/components/header.vue"
+	import indexSwiper from "@/components/indexSwiper.vue"
+	import indexService from "@/components/service.vue"
+	import adIndex from "@/components/adIndex.vue"
 	
 	export default {
 		data() {
@@ -20,7 +25,10 @@
 			}
 		},
 		components:{
-			myHeader
+			myHeader,
+			indexSwiper,
+			indexService,
+			adIndex
 		},
 		onLoad() {
 
@@ -37,13 +45,11 @@
 		padding: 0;
 	}
 	
-	.status{
-		/* 自适应设备状态栏高度 */
-		height: var(--status-bar-height);
-		width: 100%;
+	page{
+		background: #F5F4F6;
 	}
 	
 	.headerHigh{
-		height: 100rpx;
+		height: 176rpx;
 	}
 </style>

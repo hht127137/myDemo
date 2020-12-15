@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- 设备状态栏 -->
+		<view class="status_bar"></view>
 		<view class="header">
 			<view class="topHeader">
 				<view>
@@ -32,12 +34,20 @@
 		padding: 0;
 	}
 	
+	.status_bar{
+		/* 自适应设备状态栏高度 */
+		height: var(--status-bar-height);
+		background: red;
+		width: 100%;
+	}
+	
 	.header{
 		width: 100%;
 		position: fixed;
-		top: 0;
+		top: var(--status-bar-height);
 		left: 0;
 		z-index: 3;
+		background: #fff;
 	}
 	
 	.topHeader{

@@ -11,9 +11,7 @@
 				"backgroundColorBottom":"#f7f7f7",
 				"enablePullDownRefresh":true,
 				"onReachBottomDistance":50,
-				"app-plus":{
-					"titleNView":false
-				}
+				"navigationStyle":"custom"
 			}
 		},
 		{
