@@ -10,14 +10,14 @@
 				"backgroundColorTop":"#f7f7f7",
 				"backgroundColorBottom":"#f7f7f7",
 				"enablePullDownRefresh":true,
-				"onReachBottomDistance":50,
-				"navigationStyle":"custom"
+				"onReachBottomDistance":50
 			}
 		},
 		{
 			"path": "pages/category/category",
 			"style": {
-				"navigationBarTitleText": "分类"
+				"navigationBarTitleText": "分类",
+				"navigationBarBackgroundColor":"#fff"
 			}
 		},
 		{

@@ -2,14 +2,20 @@
 	<view>
 		<view class="adIndex">
 			<view class="adIndexLeft">
-				<image src="../static/image/ad1.jpg" mode=""></image>
+				<template v-if="content.length>0">
+					<image :src="content[0].imgUrl" mode=""></image>
+				</template>
 			</view>
 			<view class="adIndexRight">
 				<view>
-					<image src="../static/image/ad2.jpg"></image>
+					<template v-if="content.length>0">
+					   <image :src="content[1].imgUrl"></image>
+					</template>
 				</view>
 				<view>
-					<image src="../static/image/ad3.png"></image>
+					<template v-if="content.length>0">
+					   <image :src="content[2].imgUrl"></image>
+					</template>
 				</view>
 			</view>
 		</view>
@@ -17,6 +23,17 @@
 </template>
 
 <script>
+	export default{
+		data(){
+			return{
+				
+			}
+		},
+		props:["content"],
+		onShow(){
+			
+		}
+	}
 </script>
 
 <style lang="scss">

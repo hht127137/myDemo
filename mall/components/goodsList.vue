@@ -1,13 +1,13 @@
 <template>
 	<view class="content">
-		<view class="goodsArea">
-			<image src="../static/image/p1.png" mode=""></image>
-			<text>魅族 16S Pro</text>
+		<view class="goodsArea" v-for="(item,index) in content" :key="index">
+			<image :src="item.img" mode=""></image>
+			<text>{{item.goodstitle}}</text>
 			<view class="goodsInfo">
-				<view class="free">免息</view>
-				<view class="msg">4800W AI拍摄 屏幕下点三下</view>
+				<view class="free">{{item.free}}</view>
+				<view class="msg">{{item.detail}}</view>
 			</view>
-			<view>￥2699.00</view>
+			<view>￥{{item.price}}</view>
 		</view>
 	</view>
 </template>
@@ -18,7 +18,10 @@
 			return{
 				
 			}
-		}
+		},
+		props:[
+			"content"
+		]
 	}
 </script>
 
@@ -29,11 +32,15 @@
 	}
 	
 	.content{
-		width: 50%;
+		width: 100%;
+		background: #fff;
+		display: flex;
+		flex-wrap: wrap;
+		padding: 20rpx 0;
 	}
 	
 	.goodsArea{
-		width: 100%;
+		width: 50%;
 		display: flex;
 		flex-direction: column;
 	    align-items: center;

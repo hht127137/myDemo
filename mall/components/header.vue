@@ -15,17 +15,28 @@
 				</view>
 			</view>
 			<view class="headerNav">
-				<view class="active">推荐</view>
-				<view>手机</view>
-				<view>声学</view>
-				<view>配件</view>
-				<view>生活</view>
+				<view v-for="(item,index) in recommon_cate" :key="index" :class="current==index?'active':''" @click="cateBtn(index)">{{item.catename}}</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	export default{
+		data(){
+			return{
+				current:0
+			}
+		},
+		props:[
+			"recommon_cate"
+		],
+		methods:{
+			cateBtn(index){
+				this.current=index
+			}
+		}
+	}
 </script>
 
 <style lang="scss">
