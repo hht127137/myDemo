@@ -1,7 +1,7 @@
 //api接口的统一出口
 //地址模块接口
 const request = (url,data,method) => {
-	console.log(url,method,data)
+	// console.log(url,method,data)
 	let httpDefaultOpts = {
 		url: "http://47.56.173.44/shopdemo/public/index.php/addons/xshop" + url,
 		data: data,

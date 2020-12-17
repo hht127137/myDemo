@@ -56,7 +56,7 @@
 			flex-wrap: nowrap;
 			margin: 14rpx 0;
 			.free{
-				width: 100rpx;
+				width: 120rpx;
 				background: red;
 				color: #fff;
 				text-align: center;

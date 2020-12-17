@@ -14,26 +14,26 @@
 			<scroll-view class="cateLeft" scroll-y="true">
 				<!-- 分类列表 -->
 				<view class="cateList">
-					<view :class="current==index?'cateItem active':'cateItem'" v-for="(item,index) in cateList" :key="index" @click="changeCate(index)">
+					<view :class="current==index?'cateItem active':'cateItem'" v-for="(item,index) in goodsCate" :key="index" @click="changeCate(index)">
 						{{item.name}}
 						<view :class="{cateLine:current==index}"></view>
 					</view>
 				</view>
 			</scroll-view>
-			<scroll-view class="cateRight" scroll-y="true" :scroll-into-view="'cate'+current" scroll-with-animation='true' @scroll="scollChange">
+			<scroll-view class="cateRight" scroll-y="true" :scroll-into-view="'cate'+mainCurrent" scroll-with-animation  @scroll="scollChange">
 				<!-- 商品分类 -->
 				<view class="goodsCate" v-for="(parentItem,parentIndex) in goodsCate" :key="parentIndex" :id="'cate'+parentIndex">
-					<view v-for="(item,index) in parentItem.childlist" :key="index">
-						<text>---{{item.name}}---</text>
+					<!-- <view v-for="(item,index) in parentItem.childlist" :key="index"> -->
+						<text>---{{parentItem.name}}---</text>
 						<view class="conArea">
-							<view v-for="(item2,index2) in item.childlist" :key="index2">
+							<view v-for="(item2,index2) in parentItem.childlist" :key="index2">
 								<view>
 									<image :src="item2.image" mode=""></image>
 									<text>{{item2.name}}</text>
 								</view>
 							</view>
 						</view>
-					</view>
+					<!-- </view> -->
 				</view>
 			</scroll-view>
 		</view>
@@ -49,7 +49,9 @@
 				cateList: [],
 				current: 0,
 				goodsCate: [],
-				reactInfo:[]
+				reactInfo:[],
+				mainCurrent:0,
+				scrollTop:0
 			}
 		},
 		onLoad() {
@@ -64,27 +66,31 @@
 		methods: {
 			getData() {
 				request("/category", "", "get").then(res => {
-					console.log(res);
-					this.cateList = res.data.data
+					// console.log(res);
 					this.goodsCate = res.data.data
-					console.log(this.goodsCate)
+					const arr=[]
+					this.goodsCate.forEach((item,index)=>{
+						arr.push(...item.childlist)
+					})
+					this.goodsCate=arr;
+					console.log(this.goodsCate);
 				})
 			},
 			//滚动事件
 			scollChange(e){
-				var scrollTop=e.detail.scrollTop
-				console.log(this.reactInfo[0].top)
+				var scroll_Top=parseInt(e.detail.scrollTop) 
 				for(var i=0;i<this.reactInfo.length;i++){
-					if(scrollTop>this.reactInfo[i].top&&scrollTop<this.reactInfo[i].bottom){
-						console.log(scrollTop)
-						// console.log(this.reactInfo[i].top)
-						console.log(i)
+					if(scroll_Top>this.reactInfo[i].top&&scroll_Top<this.reactInfo[i].bottom){
+						this.current=i
+						this.scrollTop=i*50
 					}
 				}
 			},
 			// 菜单选择
 			changeCate(index) {
 				this.current = index
+				this.mainCurrent=index
+				this.scrollTop=index*50
 			},
 			//获取节点信息
 			getDomInfo() {
@@ -92,7 +98,7 @@
 				var bottom=0;
 				var temp=0;
 				for(var i=0;i<this.goodsCate.length;i++){
-					let view = uni.createSelectorQuery().in(this).select("#cate0");
+					let view = uni.createSelectorQuery().in(this).select("#cate"+i);
 					view.fields({
 						size: true,
 						scrollOffset: true,
@@ -101,7 +107,7 @@
 						top=temp;
 						bottom=temp+parseInt(data.height); 
 						temp+=parseInt(data.height)
-						this.reactInfo[i]={"top":top,"bottom":bottom}
+						this.reactInfo[i]={top:top,bottom:bottom}
 					}).exec();
 				}
 				
@@ -230,4 +236,6 @@
 		left: 0;
 		transform: translateY(-50%);
 	}
+	
+	
 </style>

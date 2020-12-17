@@ -32,6 +32,15 @@
 			"style": {
 				"navigationStyle":"custom"
 			}
+		},
+		{
+			"path": "pages/detail/detail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationBarBackgroundColor":"#fff",
+				"transparentTitle":"auto",
+				"navigationStyle":"default"
+			}
 		}
 	],
 	"globalStyle": {
