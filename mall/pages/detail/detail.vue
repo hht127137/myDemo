@@ -47,7 +47,7 @@
 			<view class="iconfont">&#xe60b;</view>
 		</view>
 		<!-- 商品规格 -->
-		<view class="goodsSpecs">
+		<view class="goodsSpecs" @click="showAttr">
 			<view>
 				规格
 				<text>请选择商品尺寸规格</text>
@@ -125,45 +125,14 @@
 		<!-- 服务弹窗 -->
 		<explain @close="closeService" v-if="servicePop"></explain>
 	    <!-- 属性弹窗 -->
-		<view class="attrPopup">
-			<!-- 遮盖 -->
-			<view class="bg"></view>
-			<!-- 属性内容 -->
-			<view class="attrDialog">
-				<view class="topDetail">
-					<image src="../../static/image/dimg1.jpg" mode=""></image>
-					<view>
-						<text>￥299.00</text>
-						<view>魅族 16s Pro 黑色</view>
-					</view>
-				</view>
-				<view class="attr">
-					<view>
-						<text>版本</text>
-						<view>
-							<view>魅族 16s Pro</view>
-							<view>魅族 16s Plus</view>
-						</view>
-					</view>
-					<view>
-						<text>颜色</text>
-						<view>
-							<view>黑色</view>
-							<view>蓝色</view>
-						</view>
-					</view>
-					<view>
-						<text>数量</text>
-					</view>
-				</view>
-			</view>
-		</view>
+		<attrDialog @close="closeAttr" v-if="attrBool"></attrDialog>
 	</view>
 </template>
 
 <script>
 	import request from '@/http/request.js'
 	import explain from '@/components/explainPopup.vue'
+    import attrDialog from '@/components/attrDialog.vue'
 
 	export default {
 		data() {
@@ -171,11 +140,13 @@
 				goodsDetail: {},
 				detail: ["图文详情", "规格参数"],
 				current: 0,
-				servicePop:false //服务弹窗显示
+				servicePop:false ,//服务弹窗显示
+				attrBool:false//属性弹窗显示
 			}
 		},
 		components:{
-			explain
+			explain,
+			attrDialog
 		},
 		onLoad() {
 			this.getData();
@@ -199,6 +170,15 @@
 			//关闭服务弹窗
 			closeService(){
 				this.servicePop=false
+			},
+			//关闭属性弹窗
+			closeAttr(){
+				console.log(1)
+				this.attrBool=false
+			},
+			//显示属性弹窗
+			showAttr(){
+				this.attrBool=true
 			}
 		}
 	}
@@ -421,45 +401,4 @@
 		}
 	}
 
-	.bg{
-		position: fixed;
-		top:0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		background: rgba(0,0,0,.5);
-	}
-
-    .attrDialog{
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		background: #fff;
-		height: 1070rpx;
-	}
-	
-	.topDetail{
-	    display: flex;
-		border-bottom: 5rpx solid #E4DFE4;
-		padding: 0rpx 28rpx 20rpx;
-		box-sizing: border-box;
-		image{
-			width: 230rpx;
-			height: 230rpx;
-			margin-top: -60rpx;
-		}
-	}
-	
-	.topDetail>view{
-		font-size: 26rpx;
-		margin: 18rpx 0 0 30rpx;
-		text{
-			font-size: 34rpx;
-			color: #C97381;
-		}
-	}
-	
-	.attr{
-		margin-left: 30rpx;
-	}
 </style>
