@@ -1,40 +1,28 @@
 <template>
 	<view class="content">
 		<!-- 轮播图 -->
-		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
-			<swiper-item>
-				<view class="swiper-item">
-					<image src="../../static/image/dimg1.jpg" mode=""></image>
-				</view>
-			</swiper-item>
-			<swiper-item>
-				<view class="swiper-item">
-					<image src="../../static/image/dimg2.jpg" mode=""></image>
-				</view>
-			</swiper-item>
-			<swiper-item>
-				<view class="swiper-item">
-					<image src="../../static/image/dimg3.jpg" mode=""></image>
-				</view>
-			</swiper-item>
-		</swiper>
+		<detailSwiper :content="goodsDetail.image" swiperHeight="550rpx"></detailSwiper>
 		<!-- 商品详情 -->
 		<view class="goodsDetail">
 			<view class="title">
 				<label>新品</label>
-				【千元以下 旗舰配置】联想乐檬K12 6.5英寸超大屏 4800万AI双摄 5000mAh大电池超续航 4G 智能游戏拍照手机
+				{{goodsDetail.title}}
 			</view>
 			<view class="desc">
-				联想乐檬K12 6.5英寸超大屏 4800万AI双摄 5000mAh大电池超续航 4G 智能游戏拍照手机
+				{{goodsDetail.description}}
 			</view>
 			<view class="priceBox">
 				<view class="price">
-					<text>￥799.00</text>
-					<text>￥599.00</text>
+					<template v-if="skus.length>0">
+						<text>￥{{skus[0].market_price}}</text>
+						<text>￥{{skus[0].price}}</text>
+					</template>
 				</view>
 
 				<text>
-					月销量:5000件
+					<template v-if="skus.length>0">
+					月销量:{{skus[0].sold_count}}件
+					</template>
 				</text>
 			</view>
 		</view>
@@ -125,14 +113,15 @@
 		<!-- 服务弹窗 -->
 		<explain @close="closeService" v-if="servicePop"></explain>
 	    <!-- 属性弹窗 -->
-		<attrDialog @close="closeAttr" v-if="attrBool"></attrDialog>
+		<attrDialog :content="goodsAttr" @close="closeAttr" v-if="attrBool"></attrDialog>
 	</view>
 </template>
 
 <script>
 	import request from '@/http/request.js'
 	import explain from '@/components/explainPopup.vue'
-    import attrDialog from '@/components/attrDialog.vue'
+	import attrDialog from '@/components/attrDialog.vue'
+	import detailSwiper from '@/components/indexSwiper.vue'
 
 	export default {
 		data() {
@@ -140,23 +129,38 @@
 				goodsDetail: {},
 				detail: ["图文详情", "规格参数"],
 				current: 0,
-				servicePop:false ,//服务弹窗显示
-				attrBool:false//属性弹窗显示
+				servicePop:false, //服务弹窗显示
+				attrBool:false,//属性弹窗显示
+				skus:[],
+				goodsAttr:[]
 			}
 		},
 		components:{
 			explain,
-			attrDialog
+			attrDialog,
+			detailSwiper
 		},
 		onLoad() {
 			this.getData();
 		},
 		methods: {
 			getData() {
-				request("/product?id=2", "", "get").then(res => {
+				request("/product?id=12", "", "get").then(res => {
 					console.log(res);
 					this.goodsDetail = res.data.data
-					console.log(this.goodsDetail)
+					this.skus=res.data.data.skus
+					console.log(this.skus)
+					
+					//拆分重组商品属性
+					var arr=[];
+					this.goodsDetail.attrGroup.forEach((item,indexs)=>{
+						var obj={}
+						obj['attrGroup']=item;
+						obj['attrSet']=this.goodsDetail.attrItems[indexs];
+						arr.push(obj);
+					})
+					this.goodsAttr=arr
+					console.log(this.goodsAttr);
 				})
 			},
 			// 切换图文详情和规格
@@ -173,7 +177,6 @@
 			},
 			//关闭属性弹窗
 			closeAttr(){
-				console.log(1)
 				this.attrBool=false
 			},
 			//显示属性弹窗
@@ -221,6 +224,7 @@
 				text-align: center;
 				padding: 5rpx;
 				box-sizing: border-box;
+				margin-right: 10rpx;
 			}
 		}
 
@@ -401,4 +405,45 @@
 		}
 	}
 
+	.bg{
+		position: fixed;
+		top:0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(0,0,0,.5);
+	}
+
+    .attrDialog{
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #fff;
+		height: 1070rpx;
+	}
+	
+	.topDetail{
+	    display: flex;
+		border-bottom: 5rpx solid #E4DFE4;
+		padding: 0rpx 28rpx 20rpx;
+		box-sizing: border-box;
+		image{
+			width: 230rpx;
+			height: 230rpx;
+			margin-top: -60rpx;
+		}
+	}
+	
+	.topDetail>view{
+		font-size: 26rpx;
+		margin: 18rpx 0 0 30rpx;
+		text{
+			font-size: 34rpx;
+			color: #C97381;
+		}
+	}
+	
+	.attr{
+		margin-left: 30rpx;
+	}
 </style>

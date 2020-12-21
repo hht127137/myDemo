@@ -4,7 +4,7 @@
 		<myHeader :recommon_cate="recommon_cate"></myHeader>
 		<view class="headerHigh"></view>
 		<!-- 轮播图 -->
-		<indexSwiper :content="banner"></indexSwiper>
+		<indexSwiper :content="banner" swiperHeight="350rpx"></indexSwiper>
 		<!-- 服务导航 -->
 		<indexService :content="actTitle" :icon="icon"></indexService>
 		<!-- 广告 -->
@@ -79,11 +79,16 @@
 				request("/nav",qs.stringify({nav_type: [0, 1, 2]}),"post").then(res=>{
 					console.log(res.data.data);
 					this.banner=res.data.data[0]
+					var arr=[]
+					this.banner.forEach((item,index)=>{
+						arr.push(item.image)
+					})
+					this.banner=arr;
 					this.actTitle=this.dataIndex.data.act
 					this.icon=this.dataIndex.data.icon
 					this.ad=this.dataIndex.data.adList
 					this.goodsList=this.dataIndex.data.goodsList
-					console.log(this.goodsList)
+					console.log(this.banner)
 				})
 			}
 		}

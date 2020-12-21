@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<!-- 轮播图 -->
-		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" @change="changeSwiper">
+		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" @change="changeSwiper" :style="{height:swiperHeight}">
 			<swiper-item v-for="(item,index) in content" :key="index">
 				<view class="swiper-item">
-					<image :src="item.image" mode=""></image>
+					<image :src="item" mode="widthFix"></image>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -23,18 +23,16 @@
 				// console.log(e);
 			}
 		},
-		props:["content"]
+		props:["content","swiperHeight"]
 	}
 </script>
 
 <style>
 	swiper{
 		width: 100%;
-		height: 350rpx;
 	}
 	
 	swiper image{
 		width: 100%;
-		height: 350rpx;
 	}
 </style>

@@ -5,41 +5,40 @@
 			<view class="bg"></view>
 			<!-- 属性内容 -->
 			<view class="attrDialog">
-				<view class="topDetail">
-					<image src="../static/image/dimg1.jpg" mode=""></image>
-					<view>
-						<text>￥299.00</text>
-						<view>魅族 16s Pro 黑色</view>
-					</view>
-					<text class="closeIcon iconfont" @click="closeBtn">&#xe62b;</text>
-				</view>
-				<view class="attr">
-					<view>
-						<text>版本</text>
-						<view class="goodsAttr">
-							<view>魅族 16s Pro</view>
-							<view>魅族 16s Plus</view>
+				<view class="attrBox">
+					<view class="topDetail">
+						<image src="../static/image/dimg1.jpg" mode=""></image>
+						<view>
+							<text>￥299.00</text>
+							<view>魅族 16s Pro 黑色</view>
 						</view>
+						<text class="closeIcon iconfont" @click="closeBtn">&#xe62b;</text>
 					</view>
-					<view>
-						<text>颜色</text>
-						<view class="goodsAttr">
-							<view>黑色</view>
-							<view>蓝色</view>
-						</view>
-					</view>
-					<view>
-						<text>数量</text>
-						<view class="numBox">
-							<view class="goodsNum">
-								<view>-</view>
-								<input type="text" value="1"/>
-								<view>+</view>
-							</view>
-							<view class="num">
-								(库存:5件)
+					<!-- 商品属性 -->
+					<view class="attr">
+						<view v-for="(parentItem,parentIndex) in content" :key="parentIndex">
+							<text v-for="(items,indexs) in parentItem.attrGroup" :key="indexs" class="title">{{items}}</text>
+							<view class="goodsAttr">
+								<view v-for="(item,index) in parentItem.attrSet" :key="index" @click="getAttr(parentIndex,index)" :class="{'active':chooseAttr[parentIndex]==index}">{{item}}</view>
 							</view>
 						</view>
+						<view>
+							<text>数量</text>
+							<view class="numBox">
+								<view class="goodsNum">
+									<view>-</view>
+									<input type="text" value="1"/>
+									<view>+</view>
+								</view>
+								<view class="num">
+									(库存:5件)
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 立即购买 -->
+					<view class="shopping">
+						立即购买
 					</view>
 				</view>
 			</view>
@@ -51,18 +50,43 @@
 	export default{
 		data(){
 			return{
-				
+				chooseAttr:[]
 			}
 		},
 		methods:{
 			closeBtn(){
 				this.$emit("close")
+			},
+			getAttr(index,childIndex){
+				console.log(this.content);
+				this.chooseAttr.splice(index,1,childIndex)
+				var temp=[]
+				for(var i=0;i<this.chooseAttr.length;i++){
+					for(var j=0;j<this.content[i].attrSet.length;j++){
+						// temp.splice(this.content[index][this.chooseAttr[childIndex]]);
+					}
+				}
+				console.log(temp);
+				// console.log(this.chooseAttr)
 			}
+		},
+		props:['content'],
+		mounted(){
+			setTimeout(()=>{
+				for(var i=0;i<this.content.length;i++){
+					this.chooseAttr.push(0)
+				}
+				console.log(this.chooseAttr)
+			},200)
 		}
 	}
 </script>
 
 <style lang="scss">
+	.active{
+		border: 1rpx solid #007AFF !important;
+	}
+	
 	.bg{
 		position: fixed;
 		top:0;
@@ -78,6 +102,11 @@
 		width: 100%;
 		background: #fff;
 		height: 1070rpx;
+	}
+	
+	.attrBox{
+		position: relative;
+		height: 100%;
 	}
 	
 	.topDetail{
@@ -162,4 +191,18 @@
 			margin-left: 20rpx;
 		}
 	}
+	
+	.shopping{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100rpx;
+		line-height: 100rpx;
+		background: #0078FF;
+		color: #fff;
+		text-align: center;
+		font-size: 30rpx;
+	}
+	
 </style>
