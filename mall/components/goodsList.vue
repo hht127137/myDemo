@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="goodsArea" v-for="(item,index) in content" :key="index">
+		<view class="goodsArea" v-for="(item,index) in content" :key="index" @click="toDetail">
 			<image :src="item.img" mode=""></image>
 			<text>{{item.goodstitle}}</text>
 			<view class="goodsInfo">
@@ -21,7 +21,14 @@
 		},
 		props:[
 			"content"
-		]
+		],
+		methods:{
+			toDetail(){
+				uni.navigateTo({
+					url:'/pages/detail/detail'
+				})
+			}
+		}
 	}
 </script>
 

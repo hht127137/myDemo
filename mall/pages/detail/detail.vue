@@ -38,7 +38,7 @@
 		<view class="goodsSpecs" @click="showAttr">
 			<view>
 				规格
-				<text>请选择商品尺寸规格</text>
+				<text>{{selectAttr}}</text>
 			</view>
 			<view class="iconfont">&#xe60b;</view>
 		</view>
@@ -106,14 +106,14 @@
 				</view>
 			</view>
 			<view class="textBtn">
-				<view>加入购物车</view>
-				<view>立即购买</view>
+				<view @click="showAttr(0)">加入购物车</view>
+				<view @click="showAttr(1)">立即购买</view>
 			</view>
 		</view>
 		<!-- 服务弹窗 -->
 		<explain @close="closeService" v-if="servicePop"></explain>
 	    <!-- 属性弹窗 -->
-		<attrDialog :content="goodsAttr" @close="closeAttr" v-if="attrBool"></attrDialog>
+		<attrDialog :type="type" @getSkus="goodsSkus" :content="goodsAttr" :skus="skus" @close="closeAttr" v-if="attrBool"></attrDialog>
 	</view>
 </template>
 
@@ -132,7 +132,10 @@
 				servicePop:false, //服务弹窗显示
 				attrBool:false,//属性弹窗显示
 				skus:[],
-				goodsAttr:[]
+				goodsAttr:[],
+				attrSkus:{},//商品信息
+				type:1,
+				selectAttr:'请选择商品尺寸规格'
 			}
 		},
 		components:{
@@ -143,8 +146,13 @@
 		onLoad() {
 			this.getData();
 		},
+		//在页面内容销毁之前设置为默认值
+		beforeDestroy(){
+			this.$store.commit('defaultAttr')
+		},
 		methods: {
 			getData() {
+				
 				request("/product?id=12", "", "get").then(res => {
 					console.log(res);
 					this.goodsDetail = res.data.data
@@ -160,7 +168,6 @@
 						arr.push(obj);
 					})
 					this.goodsAttr=arr
-					console.log(this.goodsAttr);
 				})
 			},
 			// 切换图文详情和规格
@@ -177,11 +184,16 @@
 			},
 			//关闭属性弹窗
 			closeAttr(){
+				this.selectAttr=this.$store.state.attrTxt
 				this.attrBool=false
 			},
 			//显示属性弹窗
-			showAttr(){
+			showAttr(typeid){
+				this.type=typeid
 				this.attrBool=true
+			},
+			//商品信息
+			goodsSkus(e){
 			}
 		}
 	}

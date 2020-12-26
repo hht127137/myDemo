@@ -41,6 +41,41 @@
 				"transparentTitle":"auto",
 				"navigationStyle":"default"
 			}
+		},
+		{
+			"path": "pages/login/login" 
+		},
+		{
+			"path": "pages/register/register" 
+		},
+		{
+			"path": "pages/address/address",
+			"style": {
+				"navigationBarTitleText": "地址管理",
+				"navigationBarBackgroundColor":"white"
+			}
+		},
+		{
+			"path": "pages/addAdress/addAdress",
+			"style": {
+				"navigationBarTitleText": "添加地址",
+				"navigationBarBackgroundColor":"white"
+			}
+		},
+		{
+			"path": "pages/address/editAddress",
+			"style": {
+				"navigationBarTitleText": "编辑地址",
+				"navigationBarBackgroundColor":"white"
+			}
+		},
+		{
+			"path": "pages/orderList/orderList",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"navigationBarBackgroundColor":"#010101",
+				"navigationBarTextStyle":"white"
+			}
 		}
 	],
 	"globalStyle": {

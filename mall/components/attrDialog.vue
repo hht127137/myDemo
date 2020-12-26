@@ -9,8 +9,8 @@
 					<view class="topDetail">
 						<image src="../static/image/dimg1.jpg" mode=""></image>
 						<view>
-							<text>￥299.00</text>
-							<view>魅族 16s Pro 黑色</view>
+							<text>￥{{goodsSkus.price}}</text>
+							<view>{{goodsAttr}}</view>
 						</view>
 						<text class="closeIcon iconfont" @click="closeBtn">&#xe62b;</text>
 					</view>
@@ -26,19 +26,20 @@
 							<text>数量</text>
 							<view class="numBox">
 								<view class="goodsNum">
-									<view>-</view>
-									<input type="text" value="1"/>
-									<view>+</view>
+									<view @click="reduce">-</view>
+									<input type="text" :value="goodsNum"/>
+									<view @click="add">+</view>
 								</view>
 								<view class="num">
-									(库存:5件)
+									(库存:{{goodsSkus.stock}}件)
 								</view>
 							</view>
 						</view>
 					</view>
 					<!-- 立即购买 -->
 					<view class="shopping">
-						立即购买
+						<text v-if="type==1" @click="shopping">立即购买</text>
+						<text v-else>加入购物车</text>
 					</view>
 				</view>
 			</view>
@@ -50,33 +51,71 @@
 	export default{
 		data(){
 			return{
-				chooseAttr:[]
+				chooseAttr:[],
+				goodsAttr:'',
+				goodsNum:1,
+				goodsSkus:{}
 			}
 		},
 		methods:{
 			closeBtn(){
+				console.log(this.goodsAttr,this.chooseAttr)
+				this.getAttrSet();
+				this.$store.commit('getAttr',{
+					goodsAttr:this.goodsAttr,
+					chooseAttr:this.chooseAttr
+				})
 				this.$emit("close")
 			},
 			getAttr(index,childIndex){
-				console.log(this.content);
-				this.chooseAttr.splice(index,1,childIndex)
+				this.chooseAttr.splice(index,1,childIndex);
+				this.getAttrSet();
+				this.getskus();
+			},
+			getAttrSet(){
 				var temp=[]
 				for(var i=0;i<this.chooseAttr.length;i++){
 					for(var j=0;j<this.content[i].attrSet.length;j++){
-						// temp.splice(this.content[index][this.chooseAttr[childIndex]]);
+						temp.push(this.content[i].attrSet[this.chooseAttr[i]]);
+						break;
 					}
 				}
-				console.log(temp);
-				// console.log(this.chooseAttr)
+				this.goodsAttr=temp.join(',');
+			},
+			getskus(){
+				var temp={};
+				this.skus.forEach((item,index)=>{
+					if(this.goodsAttr==item.value){
+						temp=this.skus[index];
+					}
+				})
+				this.goodsSkus=temp
+				this.$emit('getSkus',this.goodsSkus);
+			},
+			add(){
+				this.goodsNum++;
+			},
+			reduce(){
+				if(this.goodsNum<=1) return;
+				this.goodsNum--;
+			},
+			shopping(){
+				this.$back('/pages/orderList/orderList');
 			}
 		},
-		props:['content'],
+		props:['content','skus','type'],
 		mounted(){
 			setTimeout(()=>{
-				for(var i=0;i<this.content.length;i++){
-					this.chooseAttr.push(0)
+				if(this.$store.state.attrVal.length==0){
+					for(var i=0;i<this.content.length;i++){
+						this.chooseAttr.push(0)
+					}
+					this.getAttr(0,0)
+				}else{
+					this.chooseAttr=this.$store.state.attrVal
+					this.getAttrSet();
+					this.getskus();
 				}
-				console.log(this.chooseAttr)
 			},200)
 		}
 	}
@@ -101,7 +140,7 @@
 		bottom: 0;
 		width: 100%;
 		background: #fff;
-		height: 1070rpx;
+		height: 950rpx;
 	}
 	
 	.attrBox{

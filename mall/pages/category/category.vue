@@ -81,6 +81,7 @@
 				var scroll_Top=parseInt(e.detail.scrollTop) 
 				for(var i=0;i<this.reactInfo.length;i++){
 					if(scroll_Top>this.reactInfo[i].top&&scroll_Top<this.reactInfo[i].bottom){
+						console.log(i)
 						this.current=i
 						this.scrollTop=i*50
 					}
